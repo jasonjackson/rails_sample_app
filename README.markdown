@@ -2,7 +2,11 @@
 
 This is the sample application for [*Ruby on Rails Tutorial: Learn Rails by Example*](http://railstutorial.org/) by [Michael Hartl](http://michaelhartl.com/).
 
-This sample has been modified to run on Cloud Foundry. The `cf-autoconfig` gem was added to enable auto-configuration of database connections as described in the [Cloud Foundry documentation](http://docs.cloudfoundry.com/docs/using/services/ruby-service-bindings.html). The `pg` gem was also added to support connection to PostgreSQL database. 
+This sample has been modified to run on Cloud Foundry. The `cf-autoconfig` gem was added to enable auto-configuration of database connections as described in the [Cloud Foundry documentation](http://docs.cloudfoundry.com/docs/using/services/ruby-service-bindings.html). 
+
+This project was forked and updated to use the [Cloud Foundry MySQL Release](https://github.com/cloudfoundry/cf-mysql-release) as it does serve as an excellent example of best practices for BOSH packaging.  I updated this repo so that I could better understand the cf-mysql-release by testing it with an application sitting on top of it.
+
+The `activerecord-mysql2-adapter` gem was also added to support connection to MySQL database proxies provided by the cf-mysql-release. 
 
 ## Running the application on Cloud Foundry
 
@@ -13,32 +17,18 @@ First, view a list of services and plans available in your Cloud Foundry instanc
 
 ~~~
 $ cf marketplace
-Getting services from marketplace
+Getting services from marketplace in org me / space development as admin...
 OK
 
-service          plans                                                                 description
-blazemeter       free-tier, basic1kmr, pro5kmr, pp10kmr, hv40kmr                       The JMeter Load Testing Cloud
-cleardb          spark, boost, amp, shock                                              Highly available MySQL for your Apps.
-cloudamqp        lemur, tiger, bunny, rabbit, panda                                    Managed HA RabbitMQ servers in the cloud
-cloudforge       free, standard, pro                                                   Development Tools In The Cloud
-elephantsql      turtle, panda, hippo, elephant                                        PostgreSQL as a Service
-ironmq           pro_platinum, pro_gold, large, medium, small, pro_silver              Powerful Durable Message Queueing Service
-ironworker       large, pro_gold, pro_platinum, pro_silver, small, medium              Scalable Background and Async Processing
-loadimpact       lifree, li100, li500, li1000                                          Automated and on-demand performance testing
-memcachedcloud   25mb, 100mb, 250mb, 500mb, 1gb, 2-5gb, 5gb                            Enterprise-Class Memcached for Developers
-mongolab         sandbox                                                               Fully-managed MongoDB-as-a-Service
-newrelic         standard                                                              Manage and monitor your apps
-rediscloud       25mb, 100mb, 250mb, 500mb, 1gb, 2-5gb, 5gb, 10gb, 50gb                Enterprise-Class Redis for Developers
-searchify        small, plus, pro                                                      Custom search you control
-searchly         small, micro, professional, advanced, starter, business, enterprise   Search Made Simple. Powered-by ElasticSearch
-sendgrid         free, bronze, silver, gold, platinum                                  Email Delivery. Simplified.
+service   plans        description   
+p-mysql   100mb, 1gb   MySQL databases on demand   
 ~~~
 
-Choose a PostgreSQL service from the list and create a service instance named `rails-postgres` using a PostgreSQL service and plan: 
+This is my marketplace, select the only service on the list and create a service instance named `rails-mysql` using a MySQL service and plan: 
 
 ~~~
-$ cf create-service SERVICE PLAN rails-postgres
-Creating service rails-postgres
+$ cf create-service SERVICE PLAN rails-mysql
+Creating service rails-mysql
 OK
 ~~~
 
@@ -61,7 +51,7 @@ Uploading rails-sample...
 Uploading app files from: rails_sample_app
 Uploading 41.1M, 6349 files
 OK
-Binding service rails-postgres to app rails-sample
+Binding service rails-mysql to app rails-sample
 OK
 
 Starting app rails-sample

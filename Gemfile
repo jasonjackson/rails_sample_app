@@ -10,7 +10,6 @@ gem 'rails_12factor', group: :production
 ruby '2.2.2'
 
 group :development do
-  gem 'rspec-rails', '2.6.1'
   gem 'annotate', '2.4.0'
   gem 'faker', '0.3.1'
 end
